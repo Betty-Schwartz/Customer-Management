@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!-- The contents of this file will be loaded for each web application -->
+  <Context crossContext="true">
+ 
+    <!-- Default set of monitored resources -->
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+     
+   <Resource name="jdbc/customers" auth="Container"
+        type="javax.sql.DataSource"
+        maxActive="100" maxIdle="30" maxWait="10000"
+        username="root" 
+        password="" 
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://localhost:8080/customers"/>
+         <!--  url="jdbc:mysql://localhost/customers"/> -->
+         
+         <resource-ref> 
+             <description>DB connection</description> 
+             <res-ref-name>jdbc/customers</res-ref-name> 
+             <res-type>javax.sql.DataSource</res-type> 
+             <res-auth>Container</res-auth> 
+         </resource-ref>
+</Context>

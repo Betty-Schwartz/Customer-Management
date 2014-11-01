@@ -1,0 +1,49 @@
+package com.schwartz.dao;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.naming.*;
+import javax.sql.*;
+
+public class MySql_Utils {
+	private static DataSource MySql_DataSource = null;
+	private static Context context = null;
+	
+	
+	
+	//This method does the lookup
+	public static DataSource MySqlConn() throws SQLException {
+		if (MySql_DataSource != null){
+			return MySql_DataSource;
+		}
+		
+		try {
+			if (context == null)  {
+				context = new InitialContext();
+			}
+			
+			System.out.print ("context = " + context.list("java.naming.InitialContext"));
+			MySql_DataSource = (DataSource)context.lookup("MySQL_Connection");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return MySql_DataSource;
+	}
+	
+	
+	//This method creates the connection
+	protected static Connection MySqlCustomersConnection() {
+		Connection conn = null;
+		try {
+			conn = MySqlConn().getConnection();
+			return conn;
+		}
+		catch (SQLException sqe){
+			sqe.printStackTrace();
+		}
+		return conn;
+	}
+}

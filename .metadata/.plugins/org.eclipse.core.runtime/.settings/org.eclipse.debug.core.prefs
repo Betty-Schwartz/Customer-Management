@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+org.eclipse.debug.core.USE_STEP_FILTERS=true
+prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<watchExpressions>\n<expression enabled\="true" text\="query"/>\n<expression enabled\="true" text\="myString"/>\n<expression enabled\="true" text\="returnString"/>\n<expression enabled\="true" text\="conn"/>\n<expression enabled\="true" text\="MySql_DataSource"/>\n<expression enabled\="true" text\="MySQL_Connection"/>\n<expression enabled\="true" text\="context"/>\n<expression enabled\="true" text\="MySql_DataSource"/>\n</watchExpressions>\n

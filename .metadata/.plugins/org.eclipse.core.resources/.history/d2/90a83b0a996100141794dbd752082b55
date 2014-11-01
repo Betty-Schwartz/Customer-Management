@@ -1,0 +1,20 @@
+package com.schwartz.dao;
+
+import java.sql.*;
+
+import org.codehaus.jettison.json.JSONArray;
+
+import com.schwartz.util.ToJSON;
+
+public class ManageCustomers extends MySql_Utils {
+	
+	PreparedStatement query = null;
+	Connection conn = null;
+	ToJSON converter = new ToJSON();
+	JSONArray JSON = new JSONArray();
+	
+	
+	
+	
+
+}

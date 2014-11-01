@@ -1,0 +1,17 @@
+package com.schwartz.dao;
+
+import javax.naming.*;
+import javax.sql.*;
+
+public class MySql_Utils {
+	private static DataSource MySql_DataSource = null;
+	private static Context context = null;
+	
+	public static DataSource MySqlConn() throws Exception {
+	try {
+	}
+	catch (Exception e) {
+		
+	}
+    return MySql_DataSource;
+}

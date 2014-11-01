@@ -1,0 +1,116 @@
+package com.schwartz.util;
+
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/** This utility will convert database data into JSON format.
+ * 
+ * @author betty80906
+ *
+ */
+
+public class ToJSON {
+	
+	/**
+	 * This will convert database records into a JSON Array
+	 * Simply pass in a ResultSet from a database connetion, 
+	 * and it will loop through and return a JSON array.
+	 * 
+	 * @param rs - database ResultSet
+	 * @return - JSON array
+	 * @throws Exception
+	 */
+	
+	public JSONArray toJSONArray(ResultSet rs) throws Exception {
+		
+		JSONArray json = new JSONArray();  //JSON array that will be returned
+		
+		try{
+			//this will sae the table meta-data column name
+			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
+			
+			//loop through the ResultSet
+			while( rs.next() ) {
+			    //get number of columns
+				int numColumns = rsmd.getColumnCount();
+				//each row in the ResultSet will be converted to a JSON Object
+				JSONObject obj = new JSONObject();
+				
+				//loop through all the columns and place them into the JSON Object
+				for ( int i=1; i<numColumns+1; i++) {
+					String column_name = rsmd.getColumnName(i);
+					if (rsmd.getColumnType(i)== java.sql.Types.ARRAY){
+					    obj.put(column_name, rs.getArray(column_name));
+					  /*Debug*/ System.out.println("ToJson:  ARRAY");
+					}
+					else if(rsmd.getColumnType(i)== java.sql.Types.BIGINT){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  BIGINT");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.BOOLEAN){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  BOOLEAN");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.BLOB){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  BLOB");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.DOUBLE){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  DOUBLE");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.FLOAT){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  FLOAT");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.INTEGER){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  INTEGER");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.NVARCHAR){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  NVARCHAR");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.VARCHAR){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  VARCHAR");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.TINYINT){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  TINYINT");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.SMALLINT){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  SMALLINT");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.DATE){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  DATE");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.TIMESTAMP){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  TIMESTAMP");
+				    }
+					else if(rsmd.getColumnType(i)== java.sql.Types.NUMERIC){
+					    obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  NUMERIC");
+				    }
+					else {
+						obj.put(column_name, rs.getArray(column_name));
+						/*Debug*/ System.out.println("ToJson:  ARRAY");
+					}	
+					
+				} //end foreach
+			json.put(obj);
+		
+		    }//end while
+		} catch(SQLException sqe){
+			sqe.printStackTrace();
+		}
+		
+		return json; // return JSON array
+	}
+}

@@ -1,0 +1,17 @@
+127.0.0.1 - - [31/Oct/2014:14:50:24 -0600] "GET / HTTP/1.1" 404 951
+127.0.0.1 - - [31/Oct/2014:15:08:37 -0600] "GET / HTTP/1.1" 404 951
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:15:09:27 -0600] "GET /com.schwartz.customerProject/ HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:15:09:35 -0600] "GET /com.schwartz.customerProject/customers/v1/status HTTP/1.1" 200 47
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:15:09:42 -0600] "GET /com.schwartz.customerProject/customers/v1/status/version HTTP/1.1" 200 35
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:15:10:01 -0600] "GET /com.schwartz.customerProject/customers/v1/status/printSystemProperties HTTP/1.1" 204 -
+127.0.0.1 - - [31/Oct/2014:16:00:15 -0600] "GET / HTTP/1.1" 404 951
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:16:02:10 -0600] "GET /com.schwartz.customerProject/customers/v1/status HTTP/1.1" 200 47
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:16:03:00 -0600] "GET /com.schwartz.customerProject/customers/v1/status/version HTTP/1.1" 200 35
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:16:03:43 -0600] "GET /com.schwartz.customerProject/customers/v1/status/database HTTP/1.1" 204 -
+127.0.0.1 - - [31/Oct/2014:16:11:54 -0600] "GET / HTTP/1.1" 404 951
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:17:03:42 -0600] "GET /com.schwartz.customerProject/customers/v1/status/database HTTP/1.1" 204 -
+127.0.0.1 - - [31/Oct/2014:17:06:44 -0600] "GET / HTTP/1.1" 404 951
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:17:06:46 -0600] "GET /com.schwartz.customerProject/customers/v1/status/database HTTP/1.1" 204 -
+127.0.0.1 - - [31/Oct/2014:20:31:48 -0600] "GET / HTTP/1.1" 404 951
+0:0:0:0:0:0:0:1%0 - - [31/Oct/2014:20:32:04 -0600] "GET /com.schwartz.customerProject/customers/v1/status/database HTTP/1.1" 204 -
+127.0.0.1 - - [31/Oct/2014:23:58:13 -0600] "GET / HTTP/1.1" 404 951

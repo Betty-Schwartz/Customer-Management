@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;com.schwartz.dao.MySql_&apos; to &apos;MySql_Utils&apos;&#x0A;- Original project: &apos;com.schwartz.customerProject&apos;&#x0A;- Original element: &apos;com.schwartz.dao.MySql_&apos;&#x0A;- Renamed element: &apos;com.schwartz.dao.MySql_Utils&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;MySql_&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;com.schwartz.dao{MySql_.java[MySql_" matchStrategy="1" name="MySql_Utils" qualified="false" references="true" similarDeclarations="false" stamp="1414716063554" textual="false" version="1.0"/>
+</session>

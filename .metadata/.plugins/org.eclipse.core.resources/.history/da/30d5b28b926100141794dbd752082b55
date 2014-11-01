@@ -1,0 +1,8 @@
+package com.schwartz.customerProject.customers;
+
+import javax.ws.rs.Path;
+
+@Path("/v2/customers")
+public class V2_customers {
+
+}

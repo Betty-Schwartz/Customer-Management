@@ -1,0 +1,9 @@
+package com.schwartz.dao;
+
+import javax.naming.*;
+import javax.sql.*;
+
+public class MySql_Utils {
+	
+
+}
