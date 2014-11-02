@@ -60,17 +60,5 @@ public class V1_status {
 	}
 	
 	
-	@Path("/printSystemProperties")
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-	public void printSystemProperties() {
-		Properties p = System.getProperties();
-		Enumeration keys = p.keys();
-		while (keys.hasMoreElements()) {
-		  String key = (String)keys.nextElement();
-		  String value = (String)p.get(key);
-		  System.out.println(key + ": " + value);
-		}
-	}	
 
 }

@@ -31,16 +31,15 @@ public class MySql_Utils {
 		
 		try {
 			/**
-			 * This only need to run one time to get the database object
+			 * This only needs to run one time to get the database object
 			 * context is used to lookup the database object in MySql
-			 * MySql_Utils will hold the datab ase object
+			 * MySql_Utils will hold the database object
 			 */
 			if (context == null)  {
 				context = new InitialContext();
 			}
-			
-			System.out.print ("context = " + context.list("java.naming.InitialContext"));
-			MySql_DataSource = (DataSource)context.lookup("MySQL_Connection");
+			Context envContext  = (Context)context.lookup("java:/comp/env");
+			MySql_DataSource = (DataSource)envContext.lookup("jdbc/customers");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
