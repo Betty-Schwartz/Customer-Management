@@ -1,0 +1,10 @@
+
+
+function validateForm() {
+	System.out.println("Called validate.js code");
+    var x = document.forms["customerForm"]["name"].value;
+    if (x == null || x == "") {
+        alert("First name must be filled out");
+        return false;
+    }
+}

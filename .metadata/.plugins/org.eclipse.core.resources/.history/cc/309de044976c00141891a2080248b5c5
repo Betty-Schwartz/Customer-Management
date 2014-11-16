@@ -1,0 +1,154 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Customer Project</title>
+	<link type = "text/css"  rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+		
+	<script src="js/jquery-2.1.1.js"></script>
+	<script src="js/jquery.validate.js"></script>
+	<script src='js/customValidatorMessages.js'></script>
+	
+	<script src="js/bootstrap.js"> </script>
+	
+	<script src="js/polyfill.js"></script>
+    
+     <script src="js/underscore.js"></script>
+     <script src="js/custom.js"></script>
+     
+    <script>
+     $(function() {
+        $("#customerDetails").validate( {
+            rules:{
+	            name:{
+	            		required:true,
+	            		minlength:2,
+	            		maxlength:255
+	            },
+	            email:{
+	            		required:true,
+	            		email:true
+	            },
+	            phoneNumber:{
+	            		required:true,
+	            		phoneUS:true
+	            },
+	            address:{
+	            		required:true		
+	            },
+	            street:{
+	            		required:true		
+	            },
+	            city:{
+	            		required:true	
+	            },
+	            state:{
+	            		required:true	
+	            },
+	            zipCode:{
+	            		required:true		
+	            } 
+        	}
+        });
+     });
+    </script>
+</head>
+
+<body>
+    <div>
+        <h1 style="display: none"> Customer List</h1>
+        <div id="customerList">
+        
+        </div>
+    </div>
+ 
+    <script type="text/template"  id="customerTableTemplate" >
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+				<th>Address</th>
+				<th></th>
+                <th></th>
+            </tr>
+            <% _.each(listOfCustomers, function(customer) { %>
+            <tr class="customer" id="<%= customer.id %>">
+                 <td><%= customer.name %></td>
+                 <td><%= customer.email %></td>
+                 <td><%= customer.phoneNumber %></td> 
+				 <td><%= customer.address %> <%= customer.street %> <%= customer.city %>, <%= customer.state %> <%= customer.zip %></td>
+                 <td><button class="edit btn">Edit</button></td>
+                 <td><button class="delete btn">Delete</button></td>
+			</tr>
+            <% }); %>
+        </table>
+
+		<button id="newCustomer" class="btn">Create New Customer</button>
+    </script>
+    
+     <!-- This div holds a single customer's information to Edit or Create a new customer -->
+     <div  id="editCustomer" style="display: none">
+        <h1>Update or Add a Customer</h1>
+     
+     <form id="customerDetails" name="customerForm" 
+           action="#" 
+           method="post">
+        <input type="hidden" name="id" />
+		<table class="table">
+			
+			<tr>
+				<td><label for="name">Name:</label>
+					<input type="text" name="name" id="name" maxlength="255" 
+							       	placeholder="---Please enter name" autofocus required  />
+	            </td>			 
+			 <tr>
+				<td><label for="email">Email:</label>
+				<input type="text" name="email" id="email" maxlength="255" 
+				      				placeholder="---Please enter valid email" required/></td>
+			</tr>
+			<tr>
+				<td><label for="phoneNumber">Phone Number:</label>
+				<input type="text" name="phoneNumber" id="phoneNumber" maxlength="20" 
+				  					placeholder="---Please enter phone number" required /></td>
+			</tr>
+			<tr>
+				<td><label for="address">Address:</label>
+				<input type="text" name="address" id="address" maxlength="50" 
+									placeholder="---Please enter address" required /></td>
+			</tr>
+			<tr>
+				<td><label for="street">Street:</label>
+				<input type="text" name="street" id="street" maxlength="50" 
+									placeholder="---Please enter street name" required /></td>
+			</tr>
+			<tr>
+				<td><label for="city">City:</label>
+				<input type="text" name="city" id="city" maxlength="50" 
+									placeholder="---Please enter city" required /></td>
+			</tr><tr>
+				<td><label for="state">State:</label>
+				<input type="text" name="state" id="state" maxlength="50" 
+									placeholder="---Please enter state" required /></td>
+			</tr>
+			<tr>
+				<td><label for="zip">Zip Code:</label>
+				<input type="text" name="zip" id="zip" maxlength="10" 
+									placeholder="---Please enter zip code" required /></td>
+			</tr>
+
+	    </table>
+	    <button type="submit" name="submit_it" class="btn" id="submit_it">Submit</button>
+	</form>
+	
+	<br />
+	<span></span>
+    </div>
+	
+	<div id="update_response"></div>
+		
+		
+	<br /><br />
+    
+</body>
+</html>

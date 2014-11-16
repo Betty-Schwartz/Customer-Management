@@ -1,0 +1,119 @@
+$(document).ready(function() {
+	
+	// Use underscore to convert the template to a 'template' object
+	// var customerTemplate = _.template($('#customerTemplate').text());
+	// This is for the GET call
+	
+	var customerTemplate = _.template($('#customerTableTemplate').html());
+	// Use the template object to output our html
+	// Note that the customerList name equates to the customerList
+	// array that is used in the template.
+	var displayCustomers = function() {
+	  	$.get("customers", function(data) {
+		  	var html = customerTemplate({'listOfCustomers': data});
+			$("#customerList").html(html);
+		});
+	};
+	
+	var showCustomerList = function() {
+      $("#editCustomer").hide();		  		
+      $("#customerList").show();
+	};
+	
+	var showCustomerForm = function() {
+      $("#customerList").hide();
+      $("#editCustomer").show();		  
+	}
+    
+	var updateUser = function(customerData) {
+		var id = customerData.id;
+		var customerUrl = "customers" + id;
+		
+		$.ajax(customerUrl, {
+			type: "PUT",
+			success: function() {
+				displayCustomers();
+				showCustomerList();
+			}
+		});
+	};
+	
+	var createUser = function(customerData) {
+		console.log("creating a user");
+	}
+
+	
+	/**
+	 * This is for the Submit button
+	 * It will trigger an Ajax POST call 
+	 * to update an existing customer
+	 * or add a new customer
+	 * This will submit a customer entry to our customer database
+	 */
+	$('#customerDetails').on('submit', function(event) {
+		var $form = $(event.target);
+		var customerId = $form.find("input[name='id']").val();
+		var customerData = $form.serializeObject();
+
+		if(customerId) {
+			updateUser(customerData);
+		} else {
+			createUser(customerData);
+		}
+		
+		event.preventDefault();
+	});
+	
+	
+	
+	/**
+	 * Handler for Edit button
+	 * delegate style
+	 */
+	$('#customerList').on("click", ".edit", function(event) {
+      var $target = $(event.target);
+	  var $tr = $target.parents("tr");
+      var customerId = $tr.attr("id");
+	  
+	  var customerUrl = "customers/" + customerId;
+	  $.get(customerUrl, function(data) {
+		  var form = $("#editCustomer");
+		  form.find("input").each(function(_, input) {
+			 var $input = $(input);
+			 $input.val("");
+			 
+			 var name = $input.attr("name");
+			 
+			 if (data[name]) {
+				 $input.val(data[name]); 				 
+			 }
+		  });
+		  showCustomerForm();
+	  });
+	});
+	
+	
+	
+	/**
+	 * Handler for Delete Button
+	 */
+	$('#customerList').on("click",".delete", function(event) {
+      var $target = $(event.target);
+      var $tr = $target.parents("tr");
+      
+      var customerId = $tr.attr("id");
+      var path = "customers/" + customerId;
+      $.ajax(path, {
+    	  type: "DELETE",
+    	  success: function() {
+    		 displayCustomers(); 
+    	  },
+    	  error: function() {
+    		  alert("Something unexpected happened!");
+    	  }
+    	  
+      });
+	});
+	 
+	displayCustomers();
+});

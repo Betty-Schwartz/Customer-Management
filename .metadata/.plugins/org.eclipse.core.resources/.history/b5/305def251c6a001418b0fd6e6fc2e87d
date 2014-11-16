@@ -1,0 +1,118 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Customer Project</title>
+	<link type = "text/css"  rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+	
+	
+	<script src="js/jquery-2.1.1.js"></script>
+	<script src="js/jquery.validate.js"></script>
+	
+	<script src="js/bootstrap.js"> </script>
+	
+	<script src="js/polyfill.js"></script>
+    
+     <script src="js/underscore.js"></script>
+     <script src="js/custom.js"></script>
+     
+</head>
+
+<body>
+    <div>
+        <h1> Customer List</h1>
+        <div id="customer-list">
+        
+        </div>
+    </div>
+ 
+    <script type="text/template"  id="customerTableTemplate" >
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+				<th>Address</th>
+				<th></th>
+                <th></th>
+            </tr>
+            <% for(var i = 0; i < listOfCustomers.length; i++){ %>
+            <% var customer = listOfCustomers[i]; %>
+            <tr>
+                 <td><%= customer.name %></td>
+                 <td><%= customer.email %></td>
+                 <td><%= customer.phoneNumber %></td> 
+				 <td><%= customer.address %> <%= customer.street %> <%= customer.city %>, <%= customer.state %> <%= customer.zip %></td>
+                 <td><button class="edit btn">Edit</button></td>
+                 <td><button class="delete btn">Delete</button></td>
+			</tr>
+            <% } %>
+        </table>
+    </script>
+    
+     <div  id="editCustomer">
+        <h1>Update or Add a Customer</h1>
+     
+     <form id="customerDetails" name="customerForm" 
+           onsubmit="return validateForm()"
+           action="javascript:alert( 'success!' );" 
+           method="post" >
+		<table class="table">
+			
+			<tr>
+				<td><label for="name">Name:  </label>
+							<input type="text" name="name" id="name" maxlength="255" 
+							       placeholder="---Please enter name" autofocus required ></td>			 
+			 <tr>
+				<td><label for="email">Email:  </label><input type="text" name="email" id="email" maxlength="255" value="betty80906@gmail.com"></td>
+			</tr>
+			<tr>
+				<td><label for="phoneNumber">Phone Number:  </label><input type="text" name="phoneNumber" id="phoneNumber" maxlength="20" value="719.444.7777"></td>
+			</tr>
+			<tr>
+				<td><label for="address">Address:  </label><input type="text" name="address" id="address" maxlength="50" value="2920"></td>
+			</tr>
+			<tr>
+				<td><label for="street">Street:  </label><input type="text" name="street" id="street" maxlength="50" value="Lake Avenue"></td>
+			</tr>
+			<tr>
+				<td><label for="city">City:  </label><input type="text" name="city" id="city" maxlength="50" value="Springfield"></td>
+			</tr><tr>
+				<td><label for="state">State:  </label><input type="text" name="state" id="state" maxlength="50" value="Kentucky"></td>
+			</tr>
+			<tr>
+				<td><label for="zip">Zip Code:  </label><input type="text" name="zip" id="zip" maxlength="10" value="42031"></td>
+			</tr>
+			
+			<tr>
+				<td></td>
+				<td><input type="button" name="submit_it" id="submit_it" value="Submit "> </td>
+			</tr>
+	    </table>
+	</form>
+	<br />
+	<span></span>
+     </div>
+	
+	
+	<script>
+	$( "#customerDetails" ).submit(function( event) {
+		alert( "Handler for .submit() called." );
+		  if ( $( "input:first" ).val() === "Betty" ) {
+		    $( "span" ).text( "Validated..." ).show();
+		    return;
+		  }
+		 
+		  $( "span" ).text( "Not valid!" ).show().fadeOut( 1000 );
+		  event.preventDefault();
+		});
+ </script>
+
+ 
+	<div id="update_response"></div>
+		
+		
+	<br /><br />
+    
+</body>
+</html>

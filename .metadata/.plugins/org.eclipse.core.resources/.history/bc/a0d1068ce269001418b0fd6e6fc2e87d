@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Twitter Bootstrap 3 - Creativity Tuts</title>  
+    
+    <!-- Bootstrap -->     
+    <link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+    
+     <!-- jQuery -->
+     <script src=”js/jquery-2.1.1.js”></script>
+     
+     <script src="js/bootstrap.js"></script>
+   
+ 
+</head>
+
+<body>
+   <table class="table table-striped  table-bordered">
+   
+       <thead>
+          <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Job</th>
+          </tr>
+       </thead>
+       <tbody>
+          <tr>
+              <td>Test</td>
+              <td>25</td>
+              <td>TestJob</td>
+          </tr>
+          <tr>
+              <td>Test</td>
+              <td>25</td>
+              <td>TestJob</td>
+          </tr>
+             <tr>
+              <td>Test</td>
+              <td>25</td>
+              <td>TestJob</td>
+          </tr>
+             <tr>
+              <td>Test</td>
+              <td>25</td>
+              <td>TestJob</td>
+          </tr>
+             <tr>
+              <td>Test</td>
+              <td>25</td>
+              <td>TestJob</td>
+          </tr>
+       </tbody>
+        
+   </table>
+        
+</body>
+</html>

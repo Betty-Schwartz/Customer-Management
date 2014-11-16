@@ -130,7 +130,7 @@
     <!-- Default set of monitored resources -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
      
-   <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/customers" password="" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/customers" username="root"/>
+   <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/customers" password="password" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/customers" username="exampleUser"/>
          
        
 </Context>

@@ -1,0 +1,176 @@
+package com.schwartz.customerProject.customers;
+
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
+
+
+
+@Path("/v3/customers")
+public class V3_customers {
+	
+	@POST
+	@Consumes({MediaType.APPLICATION_FORM_URLENCODED, MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addCustomer (String customerData) throws Exception  {
+		String returnString = null;
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonObject = new JSONObject();
+		ManageCustomers dao = new ManageCustomers();
+		
+		try {
+			
+			JSONObject customerDetails = new JSONObject(customerData);
+			System.out.println ( "jsonData:  " + customerDetails.toString() );
+			
+		
+			int http_code = dao.insertIntoCustomers(customerDetails.optString("name"), 
+													customerDetails.optString("email"), 
+													customerDetails.optString("phoneNumber"), 
+													customerDetails.optString("address"), 
+													customerDetails.optString("street"), 
+													customerDetails.optString("city"), 
+													customerDetails.optString("state"),
+													customerDetails.optString("zip"));
+			
+			System.out.println("http_code:  " + http_code);
+
+			if( http_code == 200 ){
+				  jsonObject.put("HTTP_CODE", "200");
+				  jsonObject.put("MSG", "Item has been entered successfully, Version 3");
+				  returnString = jsonArray.put(jsonObject).toString();
+			} else {
+			return Response.status(500).entity("Unable to enter Customer").build();
+			}
+			
+			System.out.println( "returnString:  " + returnString  );
+			
+			} catch ( Exception e) {
+			e.printStackTrace();
+			return Response.status(500).entity("Server was not able to process yur request").build();
+			}
+			
+			return Response.ok(returnString).build();
+			
+			}
+
+	
+	/**
+	 * This method allows updating of the customers table.
+	 * Uses PathParams and the message body
+	 * 
+	 * @param name
+	 * @param phoneNumber
+	 * @param incomingData
+	 * @return@throws Exception
+	 * 
+	 */
+	@Path("/{name}/{city}")  //modify this to have customer name ( or better yet pk, field modified, and new value
+	@PUT
+	@Consumes({MediaType.APPLICATION_FORM_URLENCODED, MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response  updateCustomer(@PathParam("name" ) String name,
+			                        @PathParam("city") String city,
+			                        String customerData)
+									throws Exception {
+		System.out.println ( "customerData:  " + customerData.toString() );
+		System.out.println ( "name:  " + name.toString() );
+		System.out.println ( "city:  " + city.toString() );
+			
+		int idFromInputMsg;
+		int http_code;
+		String returnString = null;
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonObject = new JSONObject();
+		ManageCustomers dao = new ManageCustomers();
+		
+		try {
+			JSONObject customerDetails = new JSONObject(customerData);  //using json objects to parse data
+			idFromInputMsg = customerDetails.optInt(id,0);
+			
+			//call the correct sql method
+			http_code = dao.updateCustomers(idFromInputMsg);
+			
+			if (http_code == 200) {
+				jsonObject.put("HTTP_CODE", "200");
+				jsonObject.put("MSG", "Customer has been updated successfully");		
+			} else {
+				return Response.status(500).entity("Server was not able to process you request").build();		
+			}
+			returnString = jsonArray.put(jsonObject).toString();
+		} catch (Exception e ) {
+			e.printStackTrace();
+			return Response.status(500).entity("Server was not able to process your requst").build();
+		}
+		
+	return Response.ok(returnString).build();	
+	
+	}
+}
+	
+	/**
+	 * This method will allow you to delete data in the customers table.
+	 * 
+	 * The primary key is used to retrieve the row from the database table.
+	 *
+	 * @param name
+	 * @param city
+	 * @param customerData
+	 * @return
+	 * @throws Exception
+	 */
+	
+	/*
+
+	@Path("/{name}}")
+	@DELETE
+	@Consumes({MediaType.APPLICATION_FORM_URLENCODED, MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response  deleteCustomer(@PathParam("name") String name,
+									String customerData)
+									throws Exception {
+		
+		System.out.println ( "customerData:  " + customerData.toString() );
+		System.out.println ( "name:  " + name.toString() );
+	
+		int http_code;
+		String returnString = null;
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonObject = new JSONObject();
+		ManageCustomers dao = new ManageCustomers();
+		
+		try{
+			JSONObject customerDetails = new JSONObject(customerData);  //using json objects to parse data
+			
+			http_code = dao.deleteACustomer(name);
+			
+			if (http_code == 200) {
+				jsonObject.put("HTTP_CODE", "200");
+				jsonObject.put("MSG", "Customer has been deleted");		
+			} else {
+				return Response.status(500).entity("Server was not able to process your request").build();		
+			}
+			
+			returnString = jsonArray.put(jsonObject).toString();
+			
+		} catch (Exception e ) {
+			e.printStackTrace();
+			return Response.status(500).entity("Server was not able to process your requst").build();
+		}
+		
+	return Response.ok(returnString).build();	
+	
+		}
+	}
+	*/
+
+

@@ -1,0 +1,94 @@
+/**
+ * js file for delete.html
+ * Please use modern web browser as this file will not attempt to be
+ * compatible with older browsers. Use Chrome and open javascript console
+ * or Firefox with developer console.
+ * 
+ * jquery is required
+ */
+$(document).ready(function() {
+	
+	getInventory();
+	
+	$(document.body).on('click', ':button, .DELETE_BTN', function(e) {
+		console.log(this);
+		var $this = $(this)
+			, name = $this.val()
+			, obj = {CustomerName : name};
+		
+		deleteCustomer(obj, name);
+	});
+});
+
+function deleteCustomer(obj, name) {
+	
+	ajaxObj = {  
+			type: "DELETE",
+			url: "http://localhost:8080/com.schwartz.customerProject/customers/v3/customer/" + name,
+			data: JSON.stringify(obj), 
+			contentType:"application/json",
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR.responseText);
+			},
+			success: function(data) {
+				//console.log(data);
+				$('#delete_response').text( data[0].MSG );
+			},
+			complete: function(XMLHttpRequest) {
+				console.log( XMLHttpRequest.getAllResponseHeaders() );
+				getCustomer();
+			}, 
+			dataType: "json" //request JSON
+		};
+		
+	return $.ajax(ajaxObj);
+}
+
+function getCustomer() {
+	
+	var d = new Date()
+		, n = d.getTime();
+	
+	ajaxObj = {  
+			type: "GET",
+			
+			//this will list all customers
+			url: "http://localhost:8080/com.schwartz.customerProject/customers/v1/customers", 
+			data: "ts=" + n,
+			contentType:"application/json",
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR.responseText);
+			},
+			success: function(data) { 
+				//console.log(data);
+				var html_string = "";
+				
+				$.each(data, function(index1, val1) {
+					//console.log(val1);
+					html_string = html_string + templateGetCustomer(val1);
+				});
+				
+				$('#get_inventory').html("<table border='1'>" + html_string + "</table>");
+			},
+			complete: function(XMLHttpRequest) {
+				//console.log( XMLHttpRequest.getAllResponseHeaders() );
+			}, 
+			dataType: "json" //request JSON
+		};
+		
+	return $.ajax(ajaxObj);
+}
+
+function templateGetCustomer(param) {
+	return '<tr>' +
+				'<td class="CL_NAME">' + param.name + '</td>' +
+				'<td class="CL_PC_EMAIL">' + param.email + '</td>' +
+				'<td class="CL_PC_PHONENUMBER">' + param.phoneNumber + '</td>' +
+				'<td class="CL_ADDRESS">' + param.addressL + '</td>' +
+				'<td class="CL_STREET">' + param.street + '</td>' +
+				'<td class="CL_CITY">' + param.city + '</td>' +
+				'<td class="CL_PC_STATE">' + param.state + '</td>' +
+				'<td class="CL_PC_ZIP">' + param.zip + '</td>' +
+				'<td class="CL_CUSTOMERS_BTN"> <button class="DELETE_BTN" value=" ' + param.name + ' " type="button">Delete</button> </td>' +
+			'</tr>';
+}
