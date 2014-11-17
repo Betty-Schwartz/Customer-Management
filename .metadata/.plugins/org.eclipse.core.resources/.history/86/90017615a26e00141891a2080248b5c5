@@ -18,13 +18,6 @@
     
      <script src="js/underscore.js"></script>
      <script src="js/custom.js"></script>
-     
-     <script>
-    function goBack()
-     {
-        window.history.go(-1)
-     }
-</script>
  </head>
 
 <body>
@@ -122,9 +115,8 @@
 	    </table>
 	    <button type="submit" name="submit_it" class="btn" id="submit_it">Submit</button>
 	   
-	  
-	   <button onclick="window.location='http://localhost:8080/com.schwartz.customerProject/';return false;">Cancel</button>
-	 
+	   <button type="reset">Cancel</button>
+	   
 	</form>
 	
 	<br />

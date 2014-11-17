@@ -123,7 +123,7 @@
 	    <button type="submit" name="submit_it" class="btn" id="submit_it">Submit</button>
 	   
 	  
-	   <button onclick="window.location='http://localhost:8080/com.schwartz.customerProject/';return false;">Cancel</button>
+	   <button onclick="window.location='http://localhost:8080/com.schwartz.customerProject/';">Cancel</button>
 	 
 	</form>
 	

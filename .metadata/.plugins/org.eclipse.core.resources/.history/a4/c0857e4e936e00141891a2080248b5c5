@@ -237,14 +237,6 @@ $(document).ready(function() {
 	$('#customerList').on("click", "#newCustomer", function() {
        setupCustomerForm({});		
 	});
-	
-	/**
-	 * Handler for Cancel Create Customer Form
-	 */	
-	
-	$('#customerList').on("click",".cancel", function(event) {
-			alert("Cancel button clicked");
-			});
 	 
 	displayCustomers();
 });

@@ -243,8 +243,8 @@ $(document).ready(function() {
 	 */	
 	
 	$('#customerList').on("click",".cancel", function(event) {
-			alert("Cancel button clicked");
-			});
+			window.location='localhost:8080/com.schwartz.customerProject/';	
+	});
 	 
 	displayCustomers();
 });

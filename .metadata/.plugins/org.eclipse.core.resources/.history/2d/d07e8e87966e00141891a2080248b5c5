@@ -239,12 +239,12 @@ $(document).ready(function() {
 	});
 	
 	/**
-	 * Handler for Cancel Create Customer Form
+	 * Handler for Create Customer Button
 	 */	
 	
-	$('#customerList').on("click",".cancel", function(event) {
-			alert("Cancel button clicked");
-			});
+	$('#customerList').on("click", "cancel_it", function() {
+       		
+	});
 	 
 	displayCustomers();
 });

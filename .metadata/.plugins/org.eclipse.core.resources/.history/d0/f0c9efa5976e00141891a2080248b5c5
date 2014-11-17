@@ -242,9 +242,10 @@ $(document).ready(function() {
 	 * Handler for Cancel Create Customer Form
 	 */	
 	
-	$('#customerList').on("click",".cancel", function(event) {
-			alert("Cancel button clicked");
-			});
+	$('#customerList').on("click", "cancel_it", function() {
+		
+       		
+	});
 	 
 	displayCustomers();
 });
