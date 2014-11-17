@@ -94,8 +94,7 @@ $(document).ready(function() {
             		email:true
             },
             phoneNumber:{
-            		required:true,
-            		phoneUS:true
+            		required:true
             },
             address:{
             		required:true		
@@ -116,30 +115,7 @@ $(document).ready(function() {
     	messages:{
     		name:{
     		  required:"Don't forget your name!"
-    		},
-    		email: {
-    		      required: "We need your email address to contact you",
-    		      email: "Your email address must be in the format of name@domain.com"
-    		},
-            phoneNumber:{
-        		required:"We need your phone number to contact you"
-        },
-        address:{
-        		required:"Please enter the portion of your address preceeding the street name"		
-        },
-        street:{
-        		required:"Please enter the street name"		
-        },
-        city:{
-        		required:"Please enter your city"	
-        },
-        state:{
-        		required:"Please enter your state"	
-        },
-        zipCode:{
-        		required:"Please enter your zip code"		
-        } 
-    		  
+    		}
     	}
     });
 
@@ -158,7 +134,7 @@ $(document).ready(function() {
 		event.preventDefault();
 
 		if (! $form.valid()) {
-			alert("All form fields require values");
+			alert("this form isn't valid");
 			return;
 		}
 		
@@ -218,12 +194,8 @@ $(document).ready(function() {
     	  success: function() {
     		 displayCustomers(); 
     	  },
-    	  error: function(jqXHR, textStatus, errorThrown ) {
-    		  //look at jQuery documentation for what is passed to error function
-    		  var status = textStatus;
-    		  var error = errorThrown;
-    		  displayStatusToUser(" Status:  " + status + "\nError deleting a customer:  " + error );
-    		  
+    	  error: function() {
+    		  alert("Something unexpected happened!");
     	  }
     	  
       });

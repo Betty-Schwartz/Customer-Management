@@ -94,8 +94,7 @@ $(document).ready(function() {
             		email:true
             },
             phoneNumber:{
-            		required:true,
-            		phoneUS:true
+            		required:true
             },
             address:{
             		required:true		
@@ -120,25 +119,7 @@ $(document).ready(function() {
     		email: {
     		      required: "We need your email address to contact you",
     		      email: "Your email address must be in the format of name@domain.com"
-    		},
-            phoneNumber:{
-        		required:"We need your phone number to contact you"
-        },
-        address:{
-        		required:"Please enter the portion of your address preceeding the street name"		
-        },
-        street:{
-        		required:"Please enter the street name"		
-        },
-        city:{
-        		required:"Please enter your city"	
-        },
-        state:{
-        		required:"Please enter your state"	
-        },
-        zipCode:{
-        		required:"Please enter your zip code"		
-        } 
+    		}
     		  
     	}
     });

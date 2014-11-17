@@ -13,16 +13,6 @@ $(document).ready(function() {
 		});
 	};
 	
-	
-	/** 
-	 * Displays response to user
-	 */
-	
-	var displayStatusToUser = function(message) {
-	  	
-			$("#responseForUser").text(message);
-	
-	};
 	/**
 	 * Displays list of customers in database
 	 */
@@ -81,68 +71,7 @@ $(document).ready(function() {
 		});
 	};
 
-    $("#customerDetails").validate( {
-    	debug: true,
-        rules:{
-            name:{
-            		required:true,
-            		minlength:2,
-            		maxlength:255
-            },
-            email:{
-            		required:true,
-            		email:true
-            },
-            phoneNumber:{
-            		required:true,
-            		phoneUS:true
-            },
-            address:{
-            		required:true		
-            },
-            street:{
-            		required:true		
-            },
-            city:{
-            		required:true	
-            },
-            state:{
-            		required:true	
-            },
-            zipCode:{
-            		required:true		
-            } 
-    	},
-    	messages:{
-    		name:{
-    		  required:"Don't forget your name!"
-    		},
-    		email: {
-    		      required: "We need your email address to contact you",
-    		      email: "Your email address must be in the format of name@domain.com"
-    		},
-            phoneNumber:{
-        		required:"We need your phone number to contact you"
-        },
-        address:{
-        		required:"Please enter the portion of your address preceeding the street name"		
-        },
-        street:{
-        		required:"Please enter the street name"		
-        },
-        city:{
-        		required:"Please enter your city"	
-        },
-        state:{
-        		required:"Please enter your state"	
-        },
-        zipCode:{
-        		required:"Please enter your zip code"		
-        } 
-    		  
-    	}
-    });
-
+	
 	/**
 	 * This is for the Submit button
 	 * It will trigger an Ajax PUT call 
@@ -155,19 +84,13 @@ $(document).ready(function() {
 		var customerId = $form.find("input[name='id']").val();
 		var customerData = $form.serializeObject();
 
-		event.preventDefault();
-
-		if (! $form.valid()) {
-			alert("All form fields require values");
-			return;
-		}
-		
 		if(customerId) {
 			updateUser(customerData);
 		} else {
 			createUser(customerData);
 		}
 		
+		event.preventDefault();
 	});
 	
 	/**
@@ -218,12 +141,8 @@ $(document).ready(function() {
     	  success: function() {
     		 displayCustomers(); 
     	  },
-    	  error: function(jqXHR, textStatus, errorThrown ) {
-    		  //look at jQuery documentation for what is passed to error function
-    		  var status = textStatus;
-    		  var error = errorThrown;
-    		  displayStatusToUser(" Status:  " + status + "\nError deleting a customer:  " + error );
-    		  
+    	  error: function() {
+    		  alert("Something unexpected happened!");
     	  }
     	  
       });
