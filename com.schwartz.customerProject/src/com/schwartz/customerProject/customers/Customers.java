@@ -81,7 +81,7 @@ public class Customers extends MySql_Utils {
 		
 		try {
 			conn = MySqlCustomersConnection(); //inherited from MySql_Utils
-			query = conn.prepareStatement("SELECT id, name, email, phoneNumber, address, street, city, state, zip "+
+			query = conn.prepareStatement("SELECT id, name, email, phoneNumber, street, city, state, zip "+
 	                                       "FROM customers " + 
 	                                       "WHERE id = ? ");
 			
@@ -124,17 +124,16 @@ public class Customers extends MySql_Utils {
 			
 		    conn =  MySqlCustomersConnection(); //inherited from MySql_Utils
 			PreparedStatement query = conn.prepareStatement( "INSERT INTO customers " + 
-					"(name, email, phoneNumber, address, street, city, state, zip) " + 
-					"VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
+					"(name, email, phoneNumber, street, city, state, zip) " + 
+					"VALUES (?, ?, ?, ?, ?, ?, ?) ");
 		  
 			query.setString(1, customerData.optString("name"));
 			query.setString(2, customerData.optString("email"));
 			query.setString(3, customerData.optString("phoneNumber"));
-			query.setString(4, customerData.optString("address"));
-			query.setString(5, customerData.optString("street"));
-			query.setString(6, customerData.optString("city"));
-			query.setString(7, customerData.optString("state"));
-			query.setString(8, customerData.optString("zip"));
+			query.setString(4, customerData.optString("street"));
+			query.setString(5, customerData.optString("city"));
+			query.setString(6, customerData.optString("state"));
+			query.setString(7, customerData.optString("zip"));
 
 			query.executeUpdate();
 
@@ -171,7 +170,6 @@ public class Customers extends MySql_Utils {
 										  "SET name = ? " +
 										  ", email = ? " +
 										  ", phoneNumber = ? " +
-										  ", address = ? " +
 										  ", street = ? " +
 										  ", city = ? " +
 										  ", state = ?" +
@@ -180,12 +178,12 @@ public class Customers extends MySql_Utils {
 			query.setString(1, customerData.optString("name"));
 			query.setString(2, customerData.optString("email"));
 			query.setString(3, customerData.optString("phoneNumber"));
-			query.setString(4, customerData.optString("address"));
-			query.setString(5, customerData.optString("street"));
-			query.setString(6, customerData.optString("city"));
-			query.setString(7, customerData.optString("state"));
-			query.setString(8, customerData.optString("zip"));
-			query.setInt(9, id);
+			
+			query.setString(4, customerData.optString("street"));
+			query.setString(5, customerData.optString("city"));
+			query.setString(6, customerData.optString("state"));
+			query.setString(7, customerData.optString("zip"));
+			query.setInt(8, id);
 				
 			query.executeUpdate();
 
@@ -195,11 +193,13 @@ public class Customers extends MySql_Utils {
 		}
 		catch(SQLException sqe) {
 			sqe.printStackTrace();
-			builder.status(500);			
-		}
+			builder.status(500);
+			return builder.build();		
+		} 
 		catch (Exception e){
 			e.printStackTrace();
 			builder.status(500);
+			return builder.build();	
 		}
 		finally {
 			if (conn != null){

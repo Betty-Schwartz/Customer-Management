@@ -1,5 +1,28 @@
 $(document).ready(function() {
 	
+	$(function() {
+	    $.ajaxSetup({
+	        error: function(jqXHR, exception) {
+	            if (jqXHR.status === 0) {
+	                alert('Not connect.\n Verify Network.');
+	            } else if (jqXHR.status == 404) {
+	                alert('Requested page not found. [404]');
+	            } else if (jqXHR.status == 500) {
+	                alert('Internal Server Error [500].');
+	            } else if (exception === 'parsererror') {
+	                alert('Requested JSON parse failed.');
+	            } else if (exception === 'timeout') {
+	                alert('Time out error.');
+	            } else if (exception === 'abort') {
+	                alert('Ajax request aborted.');
+	            } else {
+	                alert('Uncaught Error.\n' + jqXHR.responseText);
+	            }
+	        }
+	    });
+	});
+
+	
 	// Use underscore to convert the template to a 'template' object
 	// This is for the GET call
 	
@@ -58,7 +81,15 @@ $(document).ready(function() {
 			success: function() {
 				displayCustomers();
 				showCustomerList();
-			}
+			},
+			  error: function(jqXHR, textStatus, errorThrown ) {
+	   		  console.log(jqXHR.status);
+	   		  console.log(jqXHR.getResponseHeader("content-type")); // application/json
+	   		  console.log(typeof jqXHR.responseText); // string
+	   		  var status = textStatus;
+	   		  var error = errorThrown;
+	   		  displayStatusToUser(" Status:  " + status + "\nError updating a customer:  " + error );
+			 }
 		});
 	};
 	
@@ -77,6 +108,14 @@ $(document).ready(function() {
 			success: function() {
 				displayCustomers();
 				showCustomerList();
+			},
+			error: function(jqXHR, textStatus, errorThrown ) {
+		   		  console.log(jqXHR.status);
+		   		  console.log(jqXHR.getResponseHeader("content-type")); // application/json
+		   		  console.log(typeof jqXHR.responseText); // string
+		   		  var status = textStatus;
+		   		  var error = errorThrown;
+		   		  displayStatusToUser(" Status:  " + status + "\nError updating a customer:  " + error );
 			}
 		});
 	};
@@ -97,9 +136,7 @@ $(document).ready(function() {
             		required:true,
             		phoneUS:true
             },
-            address:{
-            		required:true		
-            },
+            
             street:{
             		required:true		
             },
@@ -123,22 +160,19 @@ $(document).ready(function() {
     		},
             phoneNumber:{
         		required:"We need your phone number to contact you"
-        },
-        address:{
-        		required:"Please enter the portion of your address preceeding the street name"		
-        },
-        street:{
-        		required:"Please enter the street name"		
-        },
-        city:{
-        		required:"Please enter your city"	
-        },
-        state:{
-        		required:"Please enter your state"	
-        },
-        zipCode:{
-        		required:"Please enter your zip code"		
-        } 
+	        },
+	        street:{
+	        		required:"Please enter the street name"		
+	        },
+	        city:{
+	        		required:"Please enter your city"	
+	        },
+	        state:{
+	        		required:"Please enter your state"	
+	        },
+	        zipCode:{
+	        		required:"Please enter your zip code"		
+	        } 
     		  
     	}
     });
@@ -213,13 +247,15 @@ $(document).ready(function() {
       
       var customerId = $tr.attr("id");
       var path = "customers/" + customerId;
-      $.ajax(path, {
+      var jqXHRObject = $.ajax(path, {
     	  type: "DELETE",
     	  success: function() {
     		 displayCustomers(); 
     	  },
     	  error: function(jqXHR, textStatus, errorThrown ) {
-    		  //look at jQuery documentation for what is passed to error function
+    		  console.log(jqXHR.status);
+    		  console.log(jqXHR.getResponseHeader("content-type")); // application/json
+    		  console.log(typeof jqXHR.responseText); // string
     		  var status = textStatus;
     		  var error = errorThrown;
     		  displayStatusToUser(" Status:  " + status + "\nError deleting a customer:  " + error );

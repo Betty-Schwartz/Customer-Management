@@ -1,0 +1,253 @@
+$(document).ready(function() {
+	
+	// Use underscore to convert the template to a 'template' object
+	// This is for the GET call
+	
+	var customerTemplate = _.template($('#customerTableTemplate').html());
+	// Use the template object to output the html
+	
+	var displayCustomers = function() {
+	  	$.get("customers", function(data) {
+		  	var html = customerTemplate({'listOfCustomers': data});
+			$("#customerList").html(html);
+		});
+	};
+	
+	
+	/** 
+	 * Displays response to user
+	 */
+	
+	var displayStatusToUser = function(message) {
+	  	
+			$("#responseForUser").text(message);
+	
+	};
+	/**
+	 * Displays list of customers in database
+	 */
+	
+	var showCustomerList = function() {
+      $("#editCustomer").hide();		  		
+      $("#customerList").show();
+	};
+	
+	/**
+	 * Displays form to edit or create a customer in database
+	 */
+	
+	var showCustomerForm = function() {
+      $("#customerList").hide();
+      $("#editCustomer").show();		  
+	};
+    
+	/*
+	 * Updates a customer in the database
+	 * @param  customerData
+	 *
+	 */
+	
+	var updateUser = function(customerData) {
+		var id = customerData.id;
+		var customerUrl = "customers/" + id;
+		
+		$.ajax(customerUrl, {
+			type: "PUT",
+		    contentType: 'application/json; charset=utf-8',
+			data: JSON.stringify(customerData),
+			success: function() {
+				displayCustomers();
+				showCustomerList();
+			}
+		});
+	};
+	
+	/*
+	 * Inserts a customer in the database
+	 * @param  customerData
+	 * 
+	 */
+	var createUser = function(customerData) {
+		var customerUrl = "customers";
+		
+		$.ajax(customerUrl, {
+			type: "POST",
+		    contentType: 'application/json; charset=utf-8',
+			data: JSON.stringify(customerData),
+			success: function() {
+				displayCustomers();
+				showCustomerList();
+			}
+		});
+	};
+
+    $("#customerDetails").validate( {
+    	debug: true,
+        rules:{
+            name:{
+            		required:true,
+            		minlength:2,
+            		maxlength:255
+            },
+            email:{
+            		required:true,
+            		email:true
+            },
+            phoneNumber:{
+            		required:true,
+            		phoneUS:true
+            },
+            address:{
+            		required:true		
+            },
+            street:{
+            		required:true		
+            },
+            city:{
+            		required:true	
+            },
+            state:{
+            		required:true	
+            },
+            zipCode:{
+            		required:true		
+            } 
+    	},
+    	messages:{
+    		name:{
+    		  required:"Don't forget your name!"
+    		},
+    		email: {
+    		      required: "We need your email address to contact you",
+    		      email: "Your email address must be in the format of name@domain.com"
+    		},
+            phoneNumber:{
+        		required:"We need your phone number to contact you"
+        },
+        address:{
+        		required:"Please enter the portion of your address preceeding the street name"		
+        },
+        street:{
+        		required:"Please enter the street name"		
+        },
+        city:{
+        		required:"Please enter your city"	
+        },
+        state:{
+        		required:"Please enter your state"	
+        },
+        zipCode:{
+        		required:"Please enter your zip code"		
+        } 
+    		  
+    	}
+    });
+
+	/**
+	 * This is for the Submit button
+	 * It will trigger an Ajax PUT call 
+	 * to update an existing customer
+	 * or POST to add a new customer
+	 * This will submit a customer entry to the customer database
+	 */
+	$('#customerDetails').on('submit', function(event) {
+		var $form = $(event.target);
+		var customerId = $form.find("input[name='id']").val();
+		var customerData = $form.serializeObject();
+
+		event.preventDefault();
+
+		if (! $form.valid()) {
+			alert("All form fields require values");
+			return;
+		}
+		
+		if(customerId) {
+			updateUser(customerData);
+		} else {
+			createUser(customerData);
+		}
+		
+	});
+	
+	/**
+	 * Constructs Customer form
+	 * for editing or creating a customer
+	 */
+	
+	var setupCustomerForm = function(data) {
+	  var form = $("#editCustomer");
+	  form.find("input").each(function(_, input) {
+	    var $input = $(input);
+		$input.val("");
+				 
+		var name = $input.attr("name");
+				 
+		if (data[name]) {
+		  $input.val(data[name]); 				 
+	    }
+	  });
+	  showCustomerForm();
+	};
+	
+	/**
+	 * Handler for Edit button
+	 * delegate style
+	 */
+	$('#customerList').on("click", ".edit", function(event) {
+      var $target = $(event.target);
+	  var $tr = $target.parents("tr");
+      var customerId = $tr.attr("id");
+	  
+	  var customerUrl = "customers/" + customerId;
+	  $.get(customerUrl, setupCustomerForm);
+	});
+	
+	
+	/**
+	 * Handler for Delete Button
+	 */
+	$('#customerList').on("click",".delete", function(event) {
+      var $target = $(event.target);
+      var $tr = $target.parents("tr");
+      
+      var customerId = $tr.attr("id");
+      var path = "customers/" + customerId;
+      var jqXHRObject = $.ajax(path, {
+    	  type: "DELETE",
+    	  success: function() {
+    		 displayCustomers(); 
+    	  },
+    	  error: function(jqXHR, textStatus, errorThrown ) {
+    		  //look at jQuery documentation for what is passed to error function
+    		  console.log(jqXHRObject.status);
+    		  console.log(jqXHRObject.getResponseHeader("content-type")); // application/json
+    		  console.log(typeof jqXHRObject.responseText); // string
+    		  var status = textStatus;
+    		  var error = errorThrown;
+    		  displayStatusToUser(" Status:  " + status + "\nError deleting a customer:  " + error );
+    		  
+    	  }
+    	  
+      });
+	});
+	
+	
+	/**
+	 * Handler for Create Customer Button
+	 */	
+	
+	$('#customerList').on("click", "#newCustomer", function() {
+       setupCustomerForm({});		
+	});
+	
+	/**
+	 * Handler for Cancel Create Customer Form
+	 */	
+	
+	$('#customerList').on("click",".cancel", function(event) {
+			alert("Cancel button clicked");
+			});
+	 
+	displayCustomers();
+});

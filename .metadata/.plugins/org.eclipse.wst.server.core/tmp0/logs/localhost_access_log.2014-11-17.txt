@@ -203,3 +203,5 @@
 0:0:0:0:0:0:0:1%0 - - [17/Nov/2014:16:05:24 -0700] "GET /com.schwartz.customerProject/ HTTP/1.1" 304 -
 0:0:0:0:0:0:0:1%0 - - [17/Nov/2014:16:05:24 -0700] "GET /com.schwartz.customerProject/customers HTTP/1.1" 200 1056
 0:0:0:0:0:0:0:1%0 - - [17/Nov/2014:16:05:24 -0700] "GET /com.schwartz.customerProject/bootstrap/css/bootstrap.css.map HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1%0 - - [17/Nov/2014:16:30:37 -0700] "POST /com.schwartz.customerProject/customers HTTP/1.1" 200 -
+0:0:0:0:0:0:0:1%0 - - [17/Nov/2014:16:30:37 -0700] "GET /com.schwartz.customerProject/customers HTTP/1.1" 200 1203

@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Customer Project</title>
 	<link type = "text/css"  rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+	<link type="text/css"    rel="stylesheet" href="css/customerStyle.css"  /> 
 		
 	<script src="js/jquery-2.1.1.js"></script>
 	<script src="js/jquery.validate.js"></script>
@@ -55,7 +56,7 @@
                  <td><%= customer.name %></td>
                  <td><%= customer.email %></td>
                  <td><%= customer.phoneNumber %></td> 
-				 <td><%= customer.address %> 
+				 <td> 
                      <%= customer.street %> 
                      <%= customer.city %>, 
                      <%= customer.state %> 
@@ -94,11 +95,7 @@
 				<input type="text" name="phoneNumber" id="phoneNumber" maxlength="20" 
 				  					placeholder="---Please enter phone number" required /></td>
 			</tr>
-			<tr>
-				<td><label for="address">Address:</label>
-				<input type="text" name="address" id="address" maxlength="50" 
-									placeholder="---Please enter your numeric address" required /></td>
-			</tr>
+			
 			<tr>
 				<td><label for="street">Street:</label>
 				<input type="text" name="street" id="street" maxlength="50" 
