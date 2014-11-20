@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.schwartz.dao.MySql_Utils;
@@ -51,12 +52,21 @@ public class Customers extends MySql_Utils {
 				
 				returnString = json.toString();
 				
-			  rb = Response.ok(returnString).build();
+			    rb = Response.ok(returnString).build();
 			}
 			catch (SQLException sqe){
 				sqe.printStackTrace();
+				Response.status(500);
+				rb = Response.serverError().build();
+			}catch (Exception e){
+				e.printStackTrace();
+				Response.status(500);
+				rb = Response.serverError().build();
 			}
 			finally {
+				if (query != null) {
+	             	query.close();
+	             }
 				if ( conn != null){
 					conn.close();
 				}			
@@ -67,17 +77,18 @@ public class Customers extends MySql_Utils {
 	
 	/**
 	 * Return a customer.
+	 * @throws JSONException 
 	 */
 	@Path("/{id}") 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public JSONObject queryReturnCustomer(@PathParam("id") int id) throws SQLException {
+	public JSONObject queryReturnCustomer(@PathParam("id") int id) throws SQLException, JSONException {
 	
 		PreparedStatement query = null;
 		Connection conn = null;
 		
 		ToJSON converter = new ToJSON();
-		JSONObject json;
+		JSONObject json = new JSONObject();
 		
 		try {
 			conn = MySqlCustomersConnection(); //inherited from MySql_Utils
@@ -88,18 +99,22 @@ public class Customers extends MySql_Utils {
 	        query.setInt(1, id);
 	        ResultSet rs = query.executeQuery();
 	       
-	        json = converter.toJSONObject(rs);
+	        json = converter.toJSONObject(rs);  //JSONObject to return
+	        
 	        query.close();  // close connection
 		}
 		catch(SQLException sqe) {
 			sqe.printStackTrace();
-			json = new JSONObject();
+		    json.append(sqe.getMessage(), sqe.getClass());
 		}
 		catch (Exception e){
 			e.printStackTrace();
-			json = new JSONObject();
+			json.append(e.getMessage(), e.getClass());
 		}
 		finally {
+			if (query != null) {
+             	query.close();
+             }
 			if (conn != null){
 				conn.close();
 			}
@@ -116,14 +131,17 @@ public class Customers extends MySql_Utils {
 	public Response insertIntoCustomers(JSONObject customerData)  throws SQLException{
 		ResponseBuilder builder=new ResponseBuilderImpl();
 		Connection conn = null;
+		PreparedStatement query = null;
+		 
 		try {
 			/*
-			 * Validate data here before starting to insert into the database.
+			 * TODO:  Validate data here before starting to insert into the database.
+			 * Call a validate function in remote.js
 			 * 
 			 */
 			
 		    conn =  MySqlCustomersConnection(); //inherited from MySql_Utils
-			PreparedStatement query = conn.prepareStatement( "INSERT INTO customers " + 
+			query = conn.prepareStatement( "INSERT INTO customers " + 
 					"(name, email, phoneNumber, street, city, state, zip) " + 
 					"VALUES (?, ?, ?, ?, ?, ?, ?) ");
 		  
@@ -135,14 +153,27 @@ public class Customers extends MySql_Utils {
 			query.setString(6, customerData.optString("state"));
 			query.setString(7, customerData.optString("zip"));
 
-			query.executeUpdate();
+			 
+			int rowsInserted = query.executeUpdate();
+			if (rowsInserted > 0) {
+				builder.status(200);
+			    System.out.println("A new user was inserted successfully!");
+			}
 
-			builder.status(200);
+			
 		} catch(SQLException sqe) {
 			sqe.printStackTrace();
 			builder.status(500);
 		}
+		catch(Exception e) {
+			e.printStackTrace();
+			builder.status(500);
+		}
 		finally {
+			//TODO move cleanup code to it's own method
+			if (query != null) {
+             	query.close();
+             }
 			if (conn != null) {
 				conn.close();
 			}
@@ -161,12 +192,13 @@ public class Customers extends MySql_Utils {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON) 
 	public Response updateCustomer(@PathParam("id") int id,JSONObject customerData) throws SQLException {
-		ResponseBuilder builder=new ResponseBuilderImpl();
+		ResponseBuilder builder = new ResponseBuilderImpl();
+		 PreparedStatement query = null;
 		Connection conn = null;
 		
 		try {
 		    conn = MySqlCustomersConnection(); //inherited from MySql_Utils
-		    PreparedStatement query = conn.prepareStatement("UPDATE customers " +
+		    query = conn.prepareStatement("UPDATE customers " +
 										  "SET name = ? " +
 										  ", email = ? " +
 										  ", phoneNumber = ? " +
@@ -185,11 +217,16 @@ public class Customers extends MySql_Utils {
 			query.setString(7, customerData.optString("zip"));
 			query.setInt(8, id);
 				
-			query.executeUpdate();
+			
+			int rowsUpdated = query.executeUpdate();
+			if (rowsUpdated > 0) {
+			    System.out.println("An existing user was updated successfully!");
+			    builder.status(200);
+			}
 
 	        query.close();  // close connection
 	        
-	        builder.status(200);
+	        
 		}
 		catch(SQLException sqe) {
 			sqe.printStackTrace();
@@ -202,6 +239,10 @@ public class Customers extends MySql_Utils {
 			return builder.build();	
 		}
 		finally {
+			 if (query != null) {
+             	query.close();
+             }
+			
 			if (conn != null){
 				conn.close();
 			}
@@ -216,8 +257,9 @@ public class Customers extends MySql_Utils {
 	
 	@Path("{id}") 
 	@DELETE
-	public Response deleteACustomer( @PathParam("id") int id)  throws SQLException
-	{
+	public Response deleteACustomer( @PathParam("id") int id)  throws SQLException{
+		
+		ResponseBuilder builder=new ResponseBuilderImpl();
 		System.out.println("\nCustomers:deleteACustomer:  " + id );
 	                                
 	    PreparedStatement query = null;
@@ -240,23 +282,25 @@ public class Customers extends MySql_Utils {
 			} catch(SQLException sqe) {
 				System.out.println("\n Customers, caught SQLException");
 				sqe.printStackTrace();
-				ResponseBuilder builder=new ResponseBuilderImpl();
 				builder.status(500);
 				return builder.build();		
 			} catch(Exception e) {
 				System.out.println("\n Customers, caught Exception");
 				e.printStackTrace();
-				ResponseBuilder builder=new ResponseBuilderImpl();
 				builder.status(500);
 				return builder.build();
 			}
 		
 			finally {
+                if (query != null) {
+                	query.close();
+                }
 				if (conn != null) {
 					conn.close();
 				}
 		}
-		ResponseBuilder builder=new ResponseBuilderImpl();
+		
+		
 		builder.status(200);
 		return builder.build();
 	}

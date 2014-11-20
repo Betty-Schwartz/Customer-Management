@@ -83,13 +83,13 @@ $(document).ready(function() {
 				showCustomerList();
 			},
 			  error: function(jqXHR, textStatus, errorThrown ) {
-	   		  console.log(jqXHR.status);
-	   		  console.log(jqXHR.getResponseHeader("content-type")); // application/json
-	   		  console.log(typeof jqXHR.responseText); // string
+		      console.log(jqXHR.getResponseHeader("content-type")); // application/json
+	   		  console.log("Error updating a customer:d " +jqXHR.status + "  "  + jqXHR.responseText);
+	   		
 	   		  var status = textStatus;
 	   		  var error = errorThrown;
-	   		  displayStatusToUser(" Status:  " + status + "\nError updating a customer:  " + error );
-			 }
+	   		  displayStatusToUser(" Status:  " + status + "\nError updating a customer:  " + jqXHR.responseText +"\nError: " +error );
+			  }
 		});
 	};
 	
@@ -115,7 +115,7 @@ $(document).ready(function() {
 		   		  console.log(typeof jqXHR.responseText); // string
 		   		  var status = textStatus;
 		   		  var error = errorThrown;
-		   		  displayStatusToUser(" Status:  " + status + "\nError updating a customer:  " + error );
+		   		  displayStatusToUser(" Status:  " + status + "\nError adding a customer:  " + error );
 			}
 		});
 	};
@@ -235,6 +235,7 @@ $(document).ready(function() {
 	  
 	  var customerUrl = "customers/" + customerId;
 	  $.get(customerUrl, setupCustomerForm);
+	  
 	});
 	
 	
@@ -247,7 +248,7 @@ $(document).ready(function() {
       
       var customerId = $tr.attr("id");
       var path = "customers/" + customerId;
-      var jqXHRObject = $.ajax(path, {
+      $.ajax(path, {
     	  type: "DELETE",
     	  success: function() {
     		 displayCustomers(); 
